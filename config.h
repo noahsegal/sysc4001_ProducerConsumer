@@ -18,12 +18,12 @@
 #define S_KEY 1234  // Exclusivity (remove for Part 2)
 #define E_KEY 5678  // Number of Free Buffers
 #define N_KEY 9012  // Number of Filled Buffers
-#define Y_KEY 3456  // Used to ensure Producer accesses File Size before Consumer reads
+#define T_KEY 3456  // Used to ensure Producer accesses File Size before Consumer reads
 
 #define S_LOCKOUT_NUMBER 1
 #define E_LOCKOUT_NUMBER NUMBER_OF_BUFFERS
 #define N_LOCKOUT_NUMBER 0
-#define Y_LOCKOUT_NUMBER 0
+#define T_LOCKOUT_NUMBER 0
 
 #define SHM_KEY 7890
 
