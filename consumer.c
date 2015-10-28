@@ -16,7 +16,7 @@ void main(int argc, char *argv[]) {
     int sem_s_id = semget(S_KEY, 1, 0666 | IPC_CREAT);
     int sem_e_id = semget(E_KEY, 1, 0666 | IPC_CREAT);
     int sem_n_id = semget(N_KEY, 1, 0666 | IPC_CREAT);
-    int sem_y_id = semget(Y_KEY, 1, 0666 | IPC_CREAT);
+    int sem_t_id = semget(T_KEY, 1, 0666 | IPC_CREAT);
     
     /* Shared Memory */
     if ( (shmid = shmget((key_t)SHM_KEY, sizeof(circular_buf_st), 0666 | IPC_CREAT)) == -1 ) {
@@ -41,7 +41,7 @@ void main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
     
-    sem_wait(sem_y_id);
+    sem_wait(sem_t_id);
     file_size = shared_buffer -> file_size;
     
     while(file_size > 0){

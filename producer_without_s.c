@@ -13,7 +13,7 @@ void main(int argc, char *argv[]) {
     /* Semaphores */
     int sem_e_id = semget(E_KEY, 1, 0666 | IPC_CREAT);
     int sem_n_id = semget(N_KEY, 1, 0666 | IPC_CREAT);
-    int sem_y_id = semget(Y_KEY, 1, 0666 | IPC_CREAT);
+    int sem_t_id = semget(T_KEY, 1, 0666 | IPC_CREAT);
 
     if ( !set_semvalue(sem_e_id, E_LOCKOUT_NUMBER) ) {
         fprintf(stderr, "Failed to Initialize Semaphore E\n");
@@ -25,8 +25,8 @@ void main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }   
     
-    if ( !set_semvalue(sem_y_id, Y_LOCKOUT_NUMBER) ) {
-        fprintf(stderr, "Failed to Initialize Semaphore Y\n");
+    if ( !set_semvalue(sem_t_id, T_LOCKOUT_NUMBER) ) {
+        fprintf(stderr, "Failed to Initialize Semaphore T\n");
         exit(EXIT_FAILURE);
     }
     
@@ -56,7 +56,7 @@ void main(int argc, char *argv[]) {
     stat(FILE_INPUT, &st);
     shared_buffer -> file_size = st.st_size;
     printf("File Size: %d\n", shared_buffer -> file_size);
-    sem_signal(sem_y_id);
+    sem_signal(sem_t_id);
     
     while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ){
         data[OUR_BUFSIZ] = '\0';
