@@ -1,0 +1,95 @@
+////////////////////////////////
+// 10K File Size - 10 Buffers //
+////////////////////////////////
+
+Number of Buffers: 10
+Buffer Size: 128
+File Size: 10K
+Algorithm: with S
+Producer Time: 93765, 100122
+Consumer Time: 92100, 93624
+
+Number of Buffers: 10
+Buffer Size: 128
+File Size: 10K
+Algorithm: without S
+Producer Time: 8416, 29126, 8554, 25794
+Consumer Time: 2956, 22123, 3690, 20216
+
+Number of Buffers: 10
+Buffer Size: 256
+File Size: 10K
+Algorithm: with S
+Producer Time: 16353, 8627
+Consumer Time: 11349, 3441
+
+Number of Buffers: 10
+Buffer Size: 256
+File Size: 10K
+Algorithm: without S
+Producer Time: 20048, 3983
+Consumer Time: 14318, 2862
+
+Number of Buffers: 10
+Buffer Size: 512
+File Size: 10K
+Algorithm: with S
+Producer Time: 95906, 92880
+Consumer Time: 101705, 94364
+
+Number of Buffers: 10
+Buffer Size: 512
+File Size: 10K
+Algorithm: without S
+Producer Time: 7584, 19226
+Consumer Time: 2828, 18070
+
+////////////////////////////////
+// 100K File Size - 10 Buffers//
+////////////////////////////////
+
+Number of Buffers: 10 
+Buffer Size: 128
+File Size: 100K
+Algorithm: with S
+Producer Time: 19479, 9878
+Consumer Time: 12182, 3132
+
+Number of Buffers: 10
+Buffer Size: 128
+File Size: 100K
+Algorithm: without S
+Producer Time: 16133, 8900
+Consumer Time: 10640, 3267
+
+Number of Buffers: 10 
+Buffer Size: 256
+File Size: 100K
+Algorithm: with S
+Producer Time: 24232, 30717
+Consumer Time: 18477, 20227
+
+Number of Buffers: 10
+Buffer Size: 256
+File Size: 100K
+Algorithm: without S
+Producer Time: 27521, 24924
+Consumer Time: 21600, 19052
+
+Number of Buffers: 10 
+Buffer Size: 512
+File Size: 100K
+Algorithm: with S
+Producer Time: 23055, 24408
+Consumer Time: 16699, 16857
+
+Number of Buffers: 10
+Buffer Size: 512
+File Size: 100K
+Algorithm: without S
+Producer Time: 18762, 21558
+Consumer Time: 16199, 16021
+
+
+
+
