@@ -5,12 +5,14 @@ void main(int argc, char *argv[]) {
     
     int file_output;
     int file_size;
+    int total_bytes_copied = 0;
     int shmid;
     int running = 1;                    // Change --> filesize check
     int bytes_copied, buf_index = 0;
     char data[OUR_BUFSIZ + 1];
     void *shared_memory = (void *)0;    // Set to null pointer (for now)
     circular_buf_st *shared_buffer;
+    struct timeval start, end;
     
     /* Semaphores */
     int sem_s_id = semget(S_KEY, 1, 0666 | IPC_CREAT);
@@ -44,24 +46,34 @@ void main(int argc, char *argv[]) {
     sem_wait(sem_t_id);
     file_size = shared_buffer -> file_size;
     
-    while(file_size > 0){
+    //Start Time
+    gettimeofday(&start, NULL);
+    while(file_size > total_bytes_copied){
         sem_wait(sem_n_id);
         sem_wait(sem_s_id);
         
         strcpy(data, shared_buffer -> shared_mem[buf_index].buffer);
         bytes_copied = shared_buffer -> shared_mem[buf_index].count;
+        //printf("shared mem byte count %d\n", shared_buffer -> shared_mem[buf_index].count);
         
         sem_signal(sem_s_id);
         sem_signal(sem_e_id);
         
         if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;    // Increment buffer index
-        printf("Buffer Index: %d\n", buf_index - 1);
+        //printf("Buffer Index: %d\n", buf_index - 1);
         
-        write(file_output, data, bytes_copied);
-        file_size -= bytes_copied;
+        if(bytes_copied != write(file_output, data, bytes_copied)){
+            fprintf(stderr, "Size Mismatch Error when copying from Buffer to Output File\n");
+        }
+        total_bytes_copied += bytes_copied;
+        //printf("Total Bytes Copied: %d\nBytes Copied: %d\n", total_bytes_copied, bytes_copied);
     }
+    //End Time    
+    gettimeofday(&end, NULL);
     
-    
+    printf("Number of Bytes Read from shared Memory = %d\n",total_bytes_copied);
+    printf("Consumer Elapsed Time: %ld microseconds\n\n",((end.tv_sec * MICRO_SEC_IN_SEC +end.tv_usec) 
+        - (start.tv_sec * MICRO_SEC_IN_SEC +start.tv_usec)));
     close(file_output);
     exit(EXIT_SUCCESS);
 }

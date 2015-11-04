@@ -5,10 +5,12 @@
 #include <sys/shm.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 #include <fcntl.h>
 
+#define MICRO_SEC_IN_SEC 1000000
 
-#define SHARED_MEM_BUF 128
+#define SHARED_MEM_BUF 256
 #define NUMBER_OF_BUFFERS 100
 #define OUR_BUFSIZ SHARED_MEM_BUF
 
@@ -21,7 +23,7 @@
 #define T_KEY 3456  // Used to ensure Producer accesses File Size before Consumer reads
 
 #define S_LOCKOUT_NUMBER 1
-#define E_LOCKOUT_NUMBER NUMBER_OF_BUFFERS
+#define E_LOCKOUT_NUMBER (NUMBER_OF_BUFFERS - 1)
 #define N_LOCKOUT_NUMBER 0
 #define T_LOCKOUT_NUMBER 0
 

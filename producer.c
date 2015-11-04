@@ -6,9 +6,10 @@ void main(int argc, char *argv[]) {
     int file_input;
     int shmid;
     int bytes_copied, buf_index = 0;
-    char data[OUR_BUFSIZ + 1];
+    char data[OUR_BUFSIZ+ 1];
     void *shared_memory = (void *)0;   // Set to null pointer (for now)
     circular_buf_st *shared_buffer;
+    struct timeval start, end;
 
     /* Semaphores */
     int sem_s_id = semget(S_KEY, 1, 0666 | IPC_CREAT);
@@ -64,15 +65,21 @@ void main(int argc, char *argv[]) {
     printf("File Size: %d\n", shared_buffer -> file_size);
     sem_signal(sem_t_id);
     
+    //Start Time
+    gettimeofday(&start, NULL);
     while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ){
         data[OUR_BUFSIZ] = '\0';
         sem_wait(sem_e_id);
         sem_wait(sem_s_id);
         
-        printf("Bytes: %d, Data: \"%s\"\n", bytes_copied, data);
-        printf("Buffer Index: %d\n\n", buf_index);
+        //printf("Bytes: %d, Data: \"%s\"\n", bytes_copied, data);
+        //printf("Buffer Index: %d\n\n", buf_index);
         
+	shared_buffer -> shared_mem[buf_index].count = 0;
+	memset( shared_buffer -> shared_mem[buf_index].buffer, 0, sizeof(shared_buffer -> shared_mem[buf_index].buffer));	
+
         shared_buffer -> shared_mem[buf_index].count = bytes_copied;    // Set the count of copied bytes
+        //printf("shared_mem count: %d\n",shared_buffer -> shared_mem[buf_index].count);
         strcpy( shared_buffer -> shared_mem[buf_index].buffer, data );  // Copy the read data
         if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;            // Increment buffer index
         
@@ -81,7 +88,11 @@ void main(int argc, char *argv[]) {
         
         memset(data, '\0', sizeof(data));
     }
-    
+    //END Time
+    gettimeofday(&end, NULL);   
+    printf("Number of Bytes Copied to shared Memory = %d\n",st.st_size);
+    printf("Producer Elapsed Time: %ld microseconds\n\n",((end.tv_sec * MICRO_SEC_IN_SEC +end.tv_usec) 
+        - (start.tv_sec * MICRO_SEC_IN_SEC +start.tv_usec)));
     close(file_input);
     exit(EXIT_SUCCESS);
 }
