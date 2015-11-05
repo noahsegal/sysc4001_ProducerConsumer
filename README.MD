@@ -5,9 +5,13 @@ Reid Cain-Mondoux: 100945700
 
 Supported Platform: Fedora (tested on CB-5109 Lab Computers)
 
+
 This program must be run via a Unix Terminal:
 
-1.1 cd into the desired directory and perform a "make clean" followed by a "make".
+1.1 cd into the desired directory and perform a "make clean" followed by "make"
+        In Terminal Window (T1):
+            T1$ make clean
+            T1$ make
 
 1.2.1 Test Consumer and Producer (with semaphore S):
         One Terminal Window (T1):
