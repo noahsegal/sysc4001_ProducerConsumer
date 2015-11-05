@@ -65,7 +65,7 @@ void main(int argc, char *argv[]) {
     
     //Start Time
     gettimeofday(&start, NULL);
-    while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ){
+    while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ) {
        
         //ADDED BY NOAH ON NOV 5
         if (bytes_copied < 0) {
@@ -81,8 +81,8 @@ void main(int argc, char *argv[]) {
         //printf("Bytes: %d, Data: \"%s\"\n", bytes_copied, data);
         //printf("Buffer Index: %d\n\n", buf_index);
         
-	shared_buffer -> shared_mem[buf_index].count = 0;
-	memset( shared_buffer -> shared_mem[buf_index].buffer, 0, sizeof(shared_buffer -> shared_mem[buf_index].buffer));	
+	    shared_buffer -> shared_mem[buf_index].count = 0;
+	    memset( shared_buffer -> shared_mem[buf_index].buffer, 0, sizeof(shared_buffer -> shared_mem[buf_index].buffer));	
 
         shared_buffer -> shared_mem[buf_index].count = bytes_copied;    // Set the count of copied bytes
         //printf("shared_mem count: %d\n",shared_buffer -> shared_mem[buf_index].count);
