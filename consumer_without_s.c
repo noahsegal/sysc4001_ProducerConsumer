@@ -66,9 +66,9 @@ void main(int argc, char *argv[]) {
     //End Time    
     gettimeofday(&end, NULL);
     
-    //printf("Number of Bytes Read from shared Memory = %d\n",total_bytes_copied);
-    printf("Consumer Elapsed Time: %ld microseconds\n\n",((end.tv_sec * MICRO_SEC_IN_SEC +end.tv_usec) 
-        - (start.tv_sec * MICRO_SEC_IN_SEC +start.tv_usec)));
+    printf("Number of Bytes Read from shared Memory = %d\n", total_bytes_copied);
+    printf("Consumer Elapsed Time: %ld microseconds\n\n", ((end.tv_sec * MICRO_SEC_IN_SEC + end.tv_usec) 
+        - (start.tv_sec * MICRO_SEC_IN_SEC + start.tv_usec)));
     
     close(file_output);
     exit(EXIT_SUCCESS);

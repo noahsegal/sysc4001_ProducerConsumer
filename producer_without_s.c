@@ -62,6 +62,14 @@ void main(int argc, char *argv[]) {
     //Start Time
     gettimeofday(&start, NULL);
     while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ){
+        
+        //ADDED BY NOAH ON NOV 5
+        if (bytes_copied < 0) {
+            fprintf(stderr, "Error when reading from file\n");
+            exit(EXIT_FAILURE);
+        }
+        //END ADD BY NOAH ON NOV 5
+        
         data[OUR_BUFSIZ] = '\0';
         sem_wait(sem_e_id);
         
@@ -78,9 +86,9 @@ void main(int argc, char *argv[]) {
     }
     //END Time
     gettimeofday(&end, NULL);   
-    //printf("Number of Bytes Copied to shared Memory = %d\n",st.st_size);
-    printf("Producer Elapsed Time: %ld microseconds\n\n",((end.tv_sec * MICRO_SEC_IN_SEC +end.tv_usec) 
-        - (start.tv_sec * MICRO_SEC_IN_SEC +start.tv_usec)));
+    printf("Number of Bytes Copied to shared Memory = %d\n", st.st_size);
+    printf("Producer Elapsed Time: %ld microseconds\n\n", ((end.tv_sec * MICRO_SEC_IN_SEC + end.tv_usec) 
+        - (start.tv_sec * MICRO_SEC_IN_SEC + start.tv_usec)));
     close(file_input);
     exit(EXIT_SUCCESS);
 }
