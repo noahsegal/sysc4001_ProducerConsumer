@@ -108,6 +108,7 @@ void main(int argc, char *argv[]) {
     printf("Number of Bytes Copied to shared Memory = %d\n", st.st_size);
     printf("Producer Elapsed Time: %ld microseconds\n\n", ((end.tv_sec * MICRO_SEC_IN_SEC + end.tv_usec) 
         - (start.tv_sec * MICRO_SEC_IN_SEC + start.tv_usec)));
+    shmdt(shared_memory);
     close(file_input);
     exit(EXIT_SUCCESS);
 }

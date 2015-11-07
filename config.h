@@ -10,12 +10,12 @@
 
 #define MICRO_SEC_IN_SEC 1000000
 
-#define SHARED_MEM_BUF 128
-#define NUMBER_OF_BUFFERS 100
+#define SHARED_MEM_BUF 256
+#define NUMBER_OF_BUFFERS 50
 #define OUR_BUFSIZ SHARED_MEM_BUF
 
 #define FILE_OUTPUT "output.txt"
-#define FILE_INPUT "2M.txt"
+#define FILE_INPUT "input.txt"
 
 #define S_KEY 1234  // Exclusivity (remove for Part 2)
 #define E_KEY 5678  // Number of Free Buffers
