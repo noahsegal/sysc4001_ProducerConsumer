@@ -15,7 +15,7 @@
 #define OUR_BUFSIZ SHARED_MEM_BUF
 
 #define FILE_OUTPUT "output.txt"
-#define FILE_INPUT "input.txt"
+#define FILE_INPUT "2M.txt"
 
 #define S_KEY 1234  // Exclusivity (remove for Part 2)
 #define E_KEY 5678  // Number of Free Buffers
