@@ -56,7 +56,6 @@ void main(int argc, char *argv[]) {
         sem_signal(sem_e_id);
         
         if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;    // Increment buffer index
-        //printf("Buffer Index: %d\n", buf_index - 1);
         
         if (bytes_copied != write(file_output, data, bytes_copied)){
             fprintf(stderr, "Size Mismatch Error when copying from Buffer to Output File\n");

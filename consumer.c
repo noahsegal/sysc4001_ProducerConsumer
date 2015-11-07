@@ -52,21 +52,19 @@ void main(int argc, char *argv[]) {
         sem_wait(sem_n_id);
         sem_wait(sem_s_id);
         
+	//reading from shared memory
         strcpy(data, shared_buffer -> shared_mem[buf_index].buffer);
         bytes_copied = shared_buffer -> shared_mem[buf_index].count;
-        //printf("shared mem byte count %d\n", shared_buffer -> shared_mem[buf_index].count);
         
         sem_signal(sem_s_id);
         sem_signal(sem_e_id);
         
         if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;    // Increment buffer index
-        //printf("Buffer Index: %d\n", buf_index - 1);
         
         if(bytes_copied != write(file_output, data, bytes_copied)){
             fprintf(stderr, "Size Mismatch Error when copying from Buffer to Output File\n");
         }
         total_bytes_copied += bytes_copied;
-        //printf("Total Bytes Copied: %d\nBytes Copied: %d\n", total_bytes_copied, bytes_copied);
     }
     //End Time    
     gettimeofday(&end, NULL);

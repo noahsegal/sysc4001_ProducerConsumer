@@ -6,7 +6,8 @@ void main(int argc, char *argv[]) {
     int file_input;
     int shmid;
     int bytes_copied, buf_index = 0;
-    char data[OUR_BUFSIZ+ 1];
+    char data[OUR_BUFSIZ];
+    char file_data[BUFSIZ];
     void *shared_memory = (void *)0;   // Set to null pointer (for now)
     circular_buf_st *shared_buffer;
     struct timeval start, end;
@@ -57,6 +58,7 @@ void main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
     
+    /* gets file stats */
     struct stat st;
     stat(FILE_INPUT, &st);
     shared_buffer -> file_size = st.st_size;
@@ -65,34 +67,41 @@ void main(int argc, char *argv[]) {
     
     //Start Time
     gettimeofday(&start, NULL);
-    while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ) {
-       
-        //ADDED BY NOAH ON NOV 5
+    while( (bytes_copied = read(file_input, file_data, BUFSIZ)) != 0 ) {
         if (bytes_copied < 0) {
             fprintf(stderr, "Error when reading from file\n");
             exit(EXIT_FAILURE);
-        }
-        //END ADD BY NOAH ON NOV 5
-        
-        data[OUR_BUFSIZ] = '\0';
-        sem_wait(sem_e_id);
-        sem_wait(sem_s_id);
-        
-        //printf("Bytes: %d, Data: \"%s\"\n", bytes_copied, data);
-        //printf("Buffer Index: %d\n\n", buf_index);
-        
-	    shared_buffer -> shared_mem[buf_index].count = 0;
-	    memset( shared_buffer -> shared_mem[buf_index].buffer, 0, sizeof(shared_buffer -> shared_mem[buf_index].buffer));	
+        }	    
 
-        shared_buffer -> shared_mem[buf_index].count = bytes_copied;    // Set the count of copied bytes
-        //printf("shared_mem count: %d\n",shared_buffer -> shared_mem[buf_index].count);
-        strcpy( shared_buffer -> shared_mem[buf_index].buffer, data );  // Copy the read data
-        if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;            // Increment buffer index
+	    //size of data already copied to shared mem
+	    int size = 0;
+	    
+	    while(bytes_copied > size){
+	        //copying files from read file to a buffer that will be sent to shared memory.
+	        strncpy(data, file_data+size, OUR_BUFSIZ);
+       
+            size += OUR_BUFSIZ;
+            int to_copy = OUR_BUFSIZ;
+
+            //checking case where the data isn't OUR_BUFSIZ size
+            if(size>bytes_copied)
+                to_copy -=(size-bytes_copied);
+            sem_wait(sem_e_id);
+            sem_wait(sem_s_id);
+
+	        //clearing shared memory
+	        shared_buffer -> shared_mem[buf_index].count = 0;
+	        memset( shared_buffer -> shared_mem[buf_index].buffer, 0, sizeof(shared_buffer -> shared_mem[buf_index].buffer));	
+
+	        //adding data to shared memory
+            shared_buffer -> shared_mem[buf_index].count = to_copy;    // Set the count of copied bytes
+            strncpy( shared_buffer -> shared_mem[buf_index].buffer, data, to_copy );  // Copy the read data
         
-        sem_signal(sem_s_id);
-        sem_signal(sem_n_id);
-        
-        memset(data, '\0', sizeof(data));
+            sem_signal(sem_s_id);
+            sem_signal(sem_n_id);
+            if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;            // Increment buffer index
+            memset(data, '\0', sizeof(data));
+        }
     }
     //End Time
     gettimeofday(&end, NULL);   

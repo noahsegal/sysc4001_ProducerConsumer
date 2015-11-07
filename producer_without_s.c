@@ -7,6 +7,7 @@ void main(int argc, char *argv[]) {
     int shmid;
     int bytes_copied, buf_index = 0;
     char data[OUR_BUFSIZ + 1];
+    char file_data[BUFSIZ];
     void *shared_memory = (void *)0;   // Set to null pointer (for now)
     circular_buf_st *shared_buffer;
     struct timeval start, end;
@@ -61,28 +62,32 @@ void main(int argc, char *argv[]) {
     
     //Start Time
     gettimeofday(&start, NULL);
-    while( (bytes_copied = read(file_input, data, OUR_BUFSIZ)) != 0 ){
-        
-        //ADDED BY NOAH ON NOV 5
+    while( (bytes_copied = read(file_input, file_data, BUFSIZ)) != 0 ){
         if (bytes_copied < 0) {
             fprintf(stderr, "Error when reading from file\n");
             exit(EXIT_FAILURE);
+        }	    
+
+	    int size = 0;
+	    while(bytes_copied > size){
+	        strncpy(data, file_data+size, OUR_BUFSIZ);
+       
+            data[OUR_BUFSIZ] = '\0';
+            size += OUR_BUFSIZ;
+            int to_copy = OUR_BUFSIZ;
+            if(size>bytes_copied)
+                to_copy -=(size-bytes_copied);
+
+            sem_wait(sem_e_id);
+        
+            shared_buffer -> shared_mem[buf_index].count = to_copy;    // Set the count of copied bytes
+            strncpy( shared_buffer -> shared_mem[buf_index].buffer, data, to_copy );  // Copy the read data
+            if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;            // Increment buffer index
+        
+            sem_signal(sem_n_id);
+        
+            memset(data, '\0', sizeof(data));
         }
-        //END ADD BY NOAH ON NOV 5
-        
-        data[OUR_BUFSIZ] = '\0';
-        sem_wait(sem_e_id);
-        
-        //printf("Bytes: %d, Data: \"%s\"\n", bytes_copied, data);
-        //printf("Buffer Index: %d\n\n", buf_index);
-        
-        shared_buffer -> shared_mem[buf_index].count = bytes_copied;    // Set the count of copied bytes
-        strcpy( shared_buffer -> shared_mem[buf_index].buffer, data );  // Copy the read data
-        if (++buf_index == NUMBER_OF_BUFFERS) buf_index = 0;            // Increment buffer index
-        
-        sem_signal(sem_n_id);
-        
-        memset(data, '\0', sizeof(data));
     }
     //END Time
     gettimeofday(&end, NULL);   

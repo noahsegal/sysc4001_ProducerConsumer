@@ -5,8 +5,19 @@ Reid Cain-Mondoux: 100945700
 
 Supported Platform: Fedora (tested on CB-5109 Lab Computers)
 
+Requirements:
+
+Only one Producer and Consumer may run at a time.
+Consumer and Producer are order independant. It doesn't matter which runs first. (Producer may complete before Consumer runs)
+Please run a "make clean" after updating config.h file.
+
 
 This program must be run via a Unix Terminal:
+
+1.0 Edit config.h parameters for testing
+        SHARED_MEM_BUFF (int)
+        NUMBER_OF_BUFFERS (int)
+        FILE_INPUT ("String")
 
 1.1 cd into the desired directory and perform a "make clean" followed by "make"
         In Terminal Window (T1):
@@ -32,7 +43,10 @@ This program must be run via a Unix Terminal:
 1.3 Terminal output will display the number of bytes written to / read from shared memory.
     Terminal output will also display the time it took the producer / consmer to run.
     
-1.4 That's it. We hope that you enjoyed marking our assignment!
+1.4 Please look at DataAnalysis.pdf for performance results. (Bonus)
+    Data can be found in PerformanceResults.txt
+    
+1.5 That's it. We hope that you enjoy marking our assignment!
 
 
 Included Files:
@@ -47,6 +61,7 @@ Included Files:
     
 Additional Files:
     PerformanceResults.txt
+    DataAnalysis.pdf
     input.txt
     100k.txt
     10K.txt
