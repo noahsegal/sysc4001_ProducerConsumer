@@ -6,4 +6,4 @@ producer_without_s.c: config.h semaphore.h
 consumer_without_s.c: config.h semaphore.h
 
 clean:
-	rm -f producer consumer producer_without_s consumer_without_s
+	rm -f producer consumer producer_without_s consumer_without_s output.txt

@@ -20,6 +20,7 @@ This program must be run via a Unix Terminal:
         FILE_INPUT ("String")
 
 1.1 cd into the desired directory and perform a "make clean" followed by "make"
+    NOTE: "make clean" removes the output.txt file
         In Terminal Window (T1):
             T1$ make clean
             T1$ make
